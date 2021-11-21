@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55a09437e4b51d46b9cbdf958486660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocket_Speed: 30
+  rocket_Speed: 40
   rocket_gas: {fileID: 1676160993415456313}
 --- !u!136 &1676160991502482551
 CapsuleCollider:

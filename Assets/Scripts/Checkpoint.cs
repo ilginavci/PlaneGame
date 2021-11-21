@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    private Dictionary<Player, bool> did_Player_triggered = new Dictionary<Player, bool>();
+    private Dictionary<PowerController, bool> did_Player_triggered = new Dictionary<PowerController, bool>();
     private void Start()
     {
         did_Player_triggered[PlayerManager.player_Manager.GetPlayer(true)] = false;

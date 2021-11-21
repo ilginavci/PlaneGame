@@ -5,9 +5,10 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField]
-    private Player player1,player2;
-    private Dictionary<Player,Custom_Powers> player_Power = new Dictionary<Player, Custom_Powers>();
+    private PowerController player1,player2;
+    private Dictionary<PowerController,Custom_Powers> player_Power = new Dictionary<PowerController, Custom_Powers>();
     private static PlayerManager playerManager_Instance = null;
+    public GameObject destroyEffect;
     [SerializeField]
     private GameObject Rocket_Prefab,Shield_Prefab;
     public static PlayerManager player_Manager{
@@ -37,7 +38,7 @@ public class PlayerManager : MonoBehaviour
             player2.gameObject.transform.position = GameManager.gameManager.GetPlayerCheckpoint(false).gameObject.transform.position;
         }
     }
-    public Player GetPlayer(bool is_Player1){
+    public PowerController GetPlayer(bool is_Player1){
         if (is_Player1)
         {
             return player1;
@@ -49,12 +50,19 @@ public class PlayerManager : MonoBehaviour
     }
     public void ToBeShot(GameObject go,bool is_Player1){
         go.SetActive(false);
-        GetPlayer(is_Player1).player_cam.transform.SetParent(null);
-        GetPlayer(is_Player1).gameObject.SetActive(false);
-        //StartCoroutine(RespawnDelay(is_Player1));
+        var target = GetPlayer(is_Player1);
+        target.player_cam.transform.SetParent(null);
+        target.gameObject.SetActive(false);
+        destroyEffect.SetActive(false);
+        destroyEffect.transform.position = target.transform.position;
+        destroyEffect.SetActive(true);
+        StartCoroutine(RespawnDelay(is_Player1));
     }
     IEnumerator RespawnDelay(bool is_Player1){
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(1.5f);
+        var target = GetPlayer(is_Player1);
+        target.gameObject.SetActive(true);
+        target.player_cam.transform.SetParent(target.transform);
         RespawnPlayer(is_Player1);
     }
     public enum Custom_Powers
@@ -64,7 +72,7 @@ public class PlayerManager : MonoBehaviour
         SHIELD,
         NONE
     }
-    public void SetPlayerPower(Player player,Custom_Powers power)
+    public void SetPlayerPower(PowerController player,Custom_Powers power)
     {
         player_Power[player] = power;
         switch (player_Power[player])
@@ -77,7 +85,7 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
-    public Custom_Powers GetPlayerPower(Player player){
+    public Custom_Powers GetPlayerPower(PowerController player){
         return player_Power[player];
     }
     private void TakeRocket(Transform rocket_part){
@@ -109,7 +117,7 @@ public class PlayerManager : MonoBehaviour
             GetPlayer(false).SetShield(shield_go.GetComponent<Shield>());
         }
     }
-    public void SetRandomPower(Player player){
+    public void SetRandomPower(PowerController player){
         int random_n = Random.Range(0,3);//Random.Range(0,3);
         if (random_n == 1)
         {

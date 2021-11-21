@@ -12,12 +12,20 @@ public class Rocket : MonoBehaviour
     private ParticleSystem rocket_gas;
     private void FixedUpdate() {
         if (can_go)
-        {
-            gameObject.transform.LookAt(target_Transform.position);
-            gameObject.transform.Translate(Vector3.forward * rocket_Speed * Time.fixedDeltaTime);
+        {   
+            if(target_Transform.gameObject.activeSelf)
+            {
+                gameObject.transform.LookAt(target_Transform.position);
+                gameObject.transform.Translate(Vector3.forward * rocket_Speed * Time.fixedDeltaTime);
+            }
+            else
+            {
+                Destroy(this.gameObject, 10f);
+                gameObject.transform.Translate(Vector3.forward * rocket_Speed * 2 * Time.fixedDeltaTime);
+            }
         }
     }
-    public void LaunchRocket(Player target_player){
+    public void LaunchRocket(PowerController target_player){
         target_Transform = target_player.transform;
         gameObject.transform.SetParent(null);
         can_go = true;
