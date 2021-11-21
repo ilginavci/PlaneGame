@@ -29,12 +29,20 @@ public class Rocket : MonoBehaviour
         {
              if (other.gameObject.CompareTag("Player1"))
              {
-                 PlayerManager.player_Manager.ToBeShot(gameObject,true);
+                 if (!PlayerManager.player_Manager.GetPlayer(true).has_Shield)
+                 {
+                    PlayerManager.player_Manager.ToBeShot(gameObject,true);
+                 }
+                 
              }
              else if (other.gameObject.CompareTag("Player2"))
              {
-                 PlayerManager.player_Manager.ToBeShot(gameObject,false);
+                 if (!PlayerManager.player_Manager.GetPlayer(false).has_Shield)
+                 {
+                    PlayerManager.player_Manager.ToBeShot(gameObject,false);
+                 }
              }
+             Destroy(gameObject);
         }
     }
 

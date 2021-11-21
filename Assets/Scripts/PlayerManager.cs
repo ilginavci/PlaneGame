@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour
     private Dictionary<Player,Custom_Powers> player_Power = new Dictionary<Player, Custom_Powers>();
     private static PlayerManager playerManager_Instance = null;
     [SerializeField]
-    private GameObject Rocket_Prefab;
+    private GameObject Rocket_Prefab,Shield_Prefab;
     public static PlayerManager player_Manager{
         get{
             if (playerManager_Instance == null)
@@ -61,7 +61,7 @@ public class PlayerManager : MonoBehaviour
     {
         ROCKET,
         SPEED_BOOSTER,
-        GUN,
+        SHIELD,
         NONE
     }
     public void SetPlayerPower(Player player,Custom_Powers power)
@@ -94,14 +94,33 @@ public class PlayerManager : MonoBehaviour
             GetPlayer(false).SetRocket(rocket_go.GetComponent<Rocket>());
         }
     }
+    public void TakeShield(Transform player_transform)
+    {
+        Debug.Log("Shield part: " + player_transform.position + "Shield_Prefab: " + Shield_Prefab.name);
+        GameObject shield_go = GameObject.Instantiate(Shield_Prefab,player_transform.position,Quaternion.EulerAngles(Vector3.zero));
+        shield_go.transform.parent = player_transform;
+        shield_go.transform.localPosition = Vector3.zero;
+        if (player_Power[GetPlayer(true)] == Custom_Powers.SHIELD)
+        {
+            GetPlayer(true).SetShield(shield_go.GetComponent<Shield>());
+        }
+        if (player_Power[GetPlayer(false)] == Custom_Powers.SHIELD)
+        {
+            GetPlayer(false).SetShield(shield_go.GetComponent<Shield>());
+        }
+    }
     public void SetRandomPower(Player player){
-        int random_n = Random.Range(0,2);
+        int random_n = Random.Range(0,3);//Random.Range(0,3);
         if (random_n == 1)
         {
             SetPlayerPower(player, Custom_Powers.ROCKET);
         }
         else if(random_n == 0){
             SetPlayerPower(player,Custom_Powers.SPEED_BOOSTER);
+        }
+        else if (random_n == 2)
+        {
+            SetPlayerPower(player,Custom_Powers.SHIELD);
         }
     }
     

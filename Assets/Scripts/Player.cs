@@ -9,9 +9,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Transform rocket_part;
     private Rocket rocket = null;
+    private Shield shield = null;
     private bool is_Faster = false;
     private Player1Controller player_controller;
     public Camera player_cam;
+    public bool has_Shield = false;
     private void Awake() {
         player_controller = gameObject.GetComponent<Player1Controller>();
     }
@@ -46,6 +48,13 @@ public class Player : MonoBehaviour
         Debug.Log(gameObject.name +" " + "Faster");
         StartCoroutine(FasterCouldown());
     }
+    public void SetShield(Shield new_Shield){
+        if (!has_Shield)
+        {
+            shield = new_Shield;
+            has_Shield = true;
+        }
+    }
     public bool IsFaster(){
         return is_Faster;
     }
@@ -68,6 +77,14 @@ public class Player : MonoBehaviour
                     SetFaster();
                 }
                 break;
+            case PlayerManager.Custom_Powers.SHIELD:
+                Debug.Log("Testt");
+                if (!has_Shield)
+                {
+                    PlayerManager.player_Manager.TakeShield(transform);
+                    StartCoroutine(ShieldCouldown());
+                }
+                break;
         }
         rocket = null;
         PlayerManager.player_Manager.SetPlayerPower(this,PlayerManager.Custom_Powers.NONE);
@@ -76,6 +93,12 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         is_Faster = false;
         player_controller.speed -= 15;
+        PlayerManager.player_Manager.SetPlayerPower(this,PlayerManager.Custom_Powers.NONE);
+    }
+    IEnumerator ShieldCouldown(){
+        yield return new WaitForSeconds(3f);
+        Destroy(shield.gameObject);
+        has_Shield = false;
         PlayerManager.player_Manager.SetPlayerPower(this,PlayerManager.Custom_Powers.NONE);
     }
 }
