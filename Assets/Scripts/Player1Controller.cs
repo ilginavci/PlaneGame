@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player1Controller : PlaneObject
+public class Player1Controller : MonoBehaviour
 {
     public Rigidbody playerRb;
     public Animator playerAnimator;
     public float speed;
     Vector3 turnIndexs = new Vector3(0, 0, 0);
+    public KeyCode up, down, tiltRight, tiltLeft, turnRight, turnLeft, attack;
     private void TurnRight()
     {
         playerAnimator.SetBool("RudderLeft", false);
@@ -76,32 +77,32 @@ public class Player1Controller : PlaneObject
     {
         RotatePlane();
         Move();
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(up))
         {
             TiltDown();
           
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(down))
         {
             TiltUp();
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(tiltLeft))
         {
             TiltLeft();
         }
-        if(Input.GetKeyDown(KeyCode.D))
+        if(Input.GetKeyDown(tiltRight))
         {
             TiltRight();
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(turnLeft))
         {
             TurnLeft();
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(turnRight))
         {
             TurnRight();
         }
-        if (!(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)))
+        if (!(Input.GetKey(up) || Input.GetKey(down)))
         {
             StopElevator();
             if (Input.GetKeyDown(KeyCode.W))
@@ -113,11 +114,11 @@ public class Player1Controller : PlaneObject
                 TiltUp();
             }
         }
-        if (!(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
+        if (!(Input.GetKey(tiltLeft) || Input.GetKey(tiltRight)))
         {
             StopTilt();
         }
-        if (!(Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E)))
+        if (!(Input.GetKey(turnLeft) || Input.GetKey(turnRight)))
         {
             StopTurn();
         }
