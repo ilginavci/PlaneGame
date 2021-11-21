@@ -4,16 +4,28 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-  
-   
+    private Dictionary<Player,bool> did_Player_triggered;
+    private void Start() {
+        did_Player_triggered[PlayerManager.player_Manager.GetPlayer(true)] = false;
+        did_Player_triggered[PlayerManager.player_Manager.GetPlayer(false)] = false;
+    }
     private void OnTriggerExit(Collider other) {
         if(other.gameObject.CompareTag("Player1"))
         {
-            GameManager.gameManager.NextCheckpoint(true);
+            if (!did_Player_triggered[PlayerManager.player_Manager.GetPlayer(true)])
+            {
+                GameManager.gameManager.NextCheckpoint(true);
+                did_Player_triggered[PlayerManager.player_Manager.GetPlayer(true)] = true;
+            }
+            
         }
-        else
-        {   
-            GameManager.gameManager.NextCheckpoint(false);
+        else if(other.gameObject.CompareTag("Player2"))
+        {  
+            if (!did_Player_triggered[PlayerManager.player_Manager.GetPlayer(false)])
+            {
+                GameManager.gameManager.NextCheckpoint(false);
+                did_Player_triggered[PlayerManager.player_Manager.GetPlayer(false)] = true;
+            }
         }
     }
     public void ChangeChildrenLayer(LayerMask layerMask){

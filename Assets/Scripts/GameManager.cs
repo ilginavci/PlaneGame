@@ -29,17 +29,7 @@ public class GameManager : MonoBehaviour
     {
         SetCheckpoints();
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            NextCheckpoint(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            NextCheckpoint(false);
-        }
-    }
+   
     public void NextCheckpoint(bool is_Player1)
     {
         if (is_Player1)
@@ -160,5 +150,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("P1: " + p1_Current_Checkpoint);
         Debug.Log("P2: " + p2_Current_Checkpoint);
 
+    }
+    public Checkpoint GetPlayerCheckpoint(bool is_Player1){
+        if (is_Player1)
+        {
+            return players_Checkpoints[p1_Current_Checkpoint];
+        }
+        else
+        {
+            return players_Checkpoints[p2_Current_Checkpoint];
+        }
     }
 }
