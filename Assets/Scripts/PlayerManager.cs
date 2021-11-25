@@ -90,9 +90,10 @@ public class PlayerManager : MonoBehaviour
     }
     private void TakeRocket(Transform rocket_part){
         Debug.Log("Rocket part: " + rocket_part.position + " Rocket_Prefab: " + Rocket_Prefab.name);
-        GameObject rocket_go = GameObject.Instantiate(Rocket_Prefab,rocket_part.position,Quaternion.EulerAngles(Vector3.zero));
+        GameObject rocket_go = GameObject.Instantiate(Rocket_Prefab,rocket_part.position,Quaternion.EulerAngles(new Vector3(0,-90,0)));
         rocket_go.transform.parent = rocket_part;
-        rocket_go.transform.localPosition = Vector3.zero;
+        rocket_go.transform.localPosition = new Vector3(0,0,2.21f);
+        rocket_go.transform.rotation = new Quaternion(0,0,0,rocket_go.transform.rotation.z);
         if (player_Power[GetPlayer(true)] == Custom_Powers.ROCKET)
         {
             GetPlayer(true).SetRocket(rocket_go.GetComponent<Rocket>());
